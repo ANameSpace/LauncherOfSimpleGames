@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "./core/Window.h"
+#include "./data/Localization.h"
 
 
 
@@ -44,7 +45,7 @@ int main(){
     game1Button.setOutlineColor(sf::Color::White);
     game1Button.setOutlineThickness(2);
     game1Button.setPosition(100, 200);
-    sf::Text game1Text("Игра 1", font, 24);
+    sf::Text game1Text(Localization::getMsg(1), font, 24);
     game1Text.setFillColor(sf::Color::White);
     game1Text.setPosition(140, 240);
 

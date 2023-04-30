@@ -24,17 +24,18 @@
     <ClCompile Include="src\core\Window.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="src\background.jpg">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
+    <ClCompile Include="src\data\Localization.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\launcher\LauncherCore.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\core\Window.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data\Localization.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

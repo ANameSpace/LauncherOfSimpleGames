@@ -131,14 +131,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\data\Localization.cpp" />
     <ClCompile Include="src\launcher\LauncherCore.cpp" />
     <ClCompile Include="src\LauncherOfSimpleGames.cpp" />
     <ClCompile Include="src\core\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="src\background.jpg" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="src\data\Localization.h" />
     <ClInclude Include="src\launcher\LauncherCore.h" />
     <ClInclude Include="src\core\Window.h" />
   </ItemGroup>
