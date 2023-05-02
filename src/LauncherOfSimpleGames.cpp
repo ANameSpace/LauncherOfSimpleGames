@@ -4,8 +4,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "./core/Window.h"
-#include "./data/Localization.h"
+//#include "./core/Window.h"
 
 
 
@@ -15,7 +14,6 @@
 }*/
 
 int main(){
-    test();
     // Создание окна и задание его настроек
     sf::RenderWindow window(sf::VideoMode(800, 600), "Launcher Of Simple Games", sf::Style::Default);
     window.setFramerateLimit(60);
@@ -33,7 +31,7 @@ int main(){
     Решение - sf::String::fromUtf8(youstring.begin(), youstring.end())
     */
     sf::Font font;
-    if (!font.loadFromFile("font.ttf"))
+    if (!font.loadFromFile("./resources/font.ttf"))
         return -1;
     sf::Text title(L"Выберите игру", font, 48);
     title.setFillColor(sf::Color::White);
@@ -45,7 +43,7 @@ int main(){
     game1Button.setOutlineColor(sf::Color::White);
     game1Button.setOutlineThickness(2);
     game1Button.setPosition(100, 200);
-    sf::Text game1Text(Localization::getMsg(1), font, 24);
+    sf::Text game1Text(L"Выберите игру", font, 24);
     game1Text.setFillColor(sf::Color::White);
     game1Text.setPosition(140, 240);
 

@@ -18,24 +18,12 @@
     <ClCompile Include="src\LauncherOfSimpleGames.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\launcher\LauncherCore.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\core\Window.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="src\data\Localization.cpp">
+    <ClCompile Include="src\code\launcher\LauncherCore.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\launcher\LauncherCore.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\core\Window.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="src\data\Localization.h">
+    <ClInclude Include="src\code\launcher\LauncherCore.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
