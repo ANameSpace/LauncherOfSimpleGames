@@ -133,9 +133,14 @@
   <ItemGroup>
     <ClCompile Include="src\code\launcher\LauncherCore.cpp" />
     <ClCompile Include="src\LauncherOfSimpleGames.cpp" />
+    <ClCompile Include="src\code\games\TicTacToe\TicTacToe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\code\launcher\LauncherCore.h" />
+    <ClInclude Include="src\code\games\TicTacToe\TicTacToe.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\resources\image\background.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
