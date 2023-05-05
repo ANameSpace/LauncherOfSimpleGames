@@ -3,7 +3,7 @@
 //#include "./code/games/TicTacToe/TicTacToe.h"
 
 class TicTacToe {
-public:
+private:
     // CONST
     static const int BOARD_SIZE = 3;
     static const int CELL_SIZE = 200;
@@ -13,7 +13,7 @@ public:
 
     // PLAYER TYPE
     enum class PlayerType { None, Player, Bot };
-
+public:
     static void play() {
         PlayerType currentPlayer = PlayerType::None;
         bool game = true;
