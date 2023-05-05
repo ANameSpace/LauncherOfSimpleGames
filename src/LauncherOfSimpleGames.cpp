@@ -4,210 +4,21 @@
 
 class TicTacToe {
 public:
-
-    const static int WINDOW_ICON_SIZE = 64;
-
-    // Размеры поля и ячеек
+    // CONST
     static const int BOARD_SIZE = 3;
-    static const int CELL_SIZE = 100;
-
-    // Размеры окна
+    static const int CELL_SIZE = 200;
     static const int WINDOW_WIDTH = CELL_SIZE * BOARD_SIZE;
     static const int WINDOW_HEIGHT = CELL_SIZE * BOARD_SIZE;
+    const static int WINDOW_ICON_SIZE = 64;
 
-    // Описываем структуру игрока и бота
-    enum class PlayerType { None, Human, Bot };
-    struct Player {
-        sf::Color color;
-        PlayerType type;
-    };
+    // PLAYER TYPE
+    enum class PlayerType { None, Player, Bot };
 
-    // Описываем структуру игры
-    struct Game {
-        sf::RenderWindow window;
-        std::vector<Player> players;
-        std::vector<std::vector<PlayerType>> board;
-        PlayerType currentPlayer = PlayerType::None;
-    };
-
-    // Функция для отрисовки поля и крестиков/ноликов
-    void drawBoard(Game& game) {
-        // Отрисовка поля
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-                cell.setOutlineThickness(2);
-                cell.setOutlineColor(sf::Color::Black);
-                cell.setPosition(j * CELL_SIZE, i * CELL_SIZE);
-                game.window.draw(cell);
-
-                // Отрисовка крестиков/ноликов
-                if (game.board[i][j] != PlayerType::None) {
-                    Player player = game.players[static_cast<int>(game.board[i][j]) - 1];
-
-                    if (game.board[i][j] == PlayerType::Human) {
-                        sf::RectangleShape cross(sf::Vector2f(CELL_SIZE - 20, 10));
-                        cross.setFillColor(player.color);
-                        cross.rotate(45);
-                        cross.setPosition(j * CELL_SIZE + 10, i * CELL_SIZE + 45);
-                        game.window.draw(cross);
-                        cross.rotate(-90);
-                        cross.setPosition(j * CELL_SIZE + 60, i * CELL_SIZE + 45);
-                        game.window.draw(cross);
-                    }
-                    else {
-                        sf::CircleShape circle(CELL_SIZE / 2 - 20);
-                        circle.setFillColor(player.color);
-                        circle.setPosition(j * CELL_SIZE + 20, i * CELL_SIZE + 20);
-                        game.window.draw(circle);
-                    }
-                }
-            }
-        }
-    }
-
-    // Функция для проверки, является ли игра законченной
-    bool isGameOver(Game& game) {
-        // Проверка строк и столбцов
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            if (game.board[i][0] != PlayerType::None && game.board[i][0] == game.board[i][1] && game.board[i][1] == game.board[i][2]) {
-                return true;
-            }
-            if (game.board[0][i] != PlayerType::None && game.board[0][i] == game.board[1][i] && game.board[1][i] == game.board[2][i]) {
-                return true;
-            }
-        }
-
-        // Проверка диагоналей
-        if (game.board[0][0] != PlayerType::None && game.board[0][0] == game.board[1][1] && game.board[1][1] == game.board[2][2]) {
-            return true;
-        }
-        if (game.board[0][2] != PlayerType::None && game.board[0][2] == game.board[1][1] && game.board[1][1] == game.board[2][0]) {
-            return true;
-        }
-
-        // Проверка наличия пустых ячеек
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                if (game.board[i][j] == PlayerType::None) {
-                    return false;
-                }
-            }
-        }
-
-        // Если нет пустых ячеек и нет победителя - игра закончена вничью
-        return true;
-    }
-
-    // Функция для хода бота
-    void botMove(Game& game) {
-        // Находим первую пустую ячейку и ставим туда нолик
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                if (game.board[i][j] == PlayerType::None) {
-                    game.board[i][j] = PlayerType::Bot;
-                    return;
-                }
-            }
-        }
-    }
-
-    // Функция, которая проверяет, может ли игрок поставить свой знак в данной ячейке
-    bool canMakeMove(Game& game, int row, int col) {
-        if (game.board[row][col] == PlayerType::None && game.currentPlayer == PlayerType::Human) {
-            return true;
-        }
-
-        return false;
-    }
-
-    // Функция для обработки клика мыши
-    void handleMouseClick(Game& game, int mouseX, int mouseY) {
-        if (game.currentPlayer == PlayerType::Human) {
-            // Определяем номер ячейки, в которую кликнули
-            int row = mouseY / CELL_SIZE;
-            int col = mouseX / CELL_SIZE;
-
-            // Если ячейка пустая, то ставим туда крестик
-            if (canMakeMove(game, row, col)) {
-                game.board[row][col] = PlayerType::Human;
-                game.currentPlayer = PlayerType::Bot;
-            }
-        }
-    }
-
-    // Функция для обработки событий
-    void processEvents(Game& game) {
-
-    }
-
-    // Функция для обновления игры
-    void update(Game& game) {
-        // Если игра закончилась, то обновляем сообщение и создаем новую игру
-        if (isGameOver(game)) {
-            std::cout << "Игра окончена!" << std::endl;
-            return;
-        }
-
-        // Ход бота
-        if (game.currentPlayer == PlayerType::Bot) {
-            botMove(game);
-            game.currentPlayer = PlayerType::Human;
-        }
-    }
-
-    // Функция для запуска игры
-    static void play_old() {
-        sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Крестики-нолики");
-        window.setFramerateLimit(60);
-
-        // Создаем игроков
-        std::vector<Player> players;
-        players.push_back({ sf::Color::Red, PlayerType::Human });
-        players.push_back({ sf::Color::Blue, PlayerType::Bot });
-
-        // Создаем поле
-        std::vector<std::vector<PlayerType>> board(BOARD_SIZE, std::vector<PlayerType>(BOARD_SIZE, PlayerType::None));
-
-        while (window.isOpen()) {
-            window.clear(sf::Color::White);
-            // Отрисовка поля
-            for (int i = 0; i < BOARD_SIZE; i++) {
-                for (int j = 0; j < BOARD_SIZE; j++) {
-                    sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-                    cell.setOutlineThickness(2);
-                    cell.setOutlineColor(sf::Color::Black);
-                    cell.setPosition(j * CELL_SIZE, i * CELL_SIZE);
-                    window.draw(cell);
-
-                    // Отрисовка крестиков/ноликов
-                    if (board[i][j] != PlayerType::None) {
-                        Player player = players[static_cast<int>(board[i][j]) - 1];
-
-                        if (board[i][j] == PlayerType::Human) {
-                            sf::RectangleShape cross(sf::Vector2f(CELL_SIZE - 20, 10));
-                            cross.setFillColor(player.color);
-                            cross.rotate(45);
-                            cross.setPosition(j * CELL_SIZE + 10, i * CELL_SIZE + 45);
-                            window.draw(cross);
-                            cross.rotate(-90);
-                            cross.setPosition(j * CELL_SIZE + 60, i * CELL_SIZE + 45);
-                            window.draw(cross);
-                        }
-                        else {
-                            sf::CircleShape circle(CELL_SIZE / 2 - 20);
-                            circle.setFillColor(player.color);
-                            circle.setPosition(j * CELL_SIZE + 20, i * CELL_SIZE + 20);
-                            window.draw(circle);
-                        }
-
-                    }
-                }
-            }
-            window.display();
-        }
-    }
     static void play() {
+        PlayerType currentPlayer = PlayerType::None;
+        bool game = true;
+        int win = 0;
+
         // WINDOW
         sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "TicTacToe", sf::Style::Default);
         window.setFramerateLimit(60);
@@ -226,16 +37,130 @@ public:
         if (!backgroundTexture.loadFromFile("./src/resources/image/background.jpg")) { return; }
         sf::Sprite background(backgroundTexture);
 
+
+        // BOARD
+        std::vector<std::vector<PlayerType>> board(BOARD_SIZE, std::vector<PlayerType>(BOARD_SIZE, PlayerType::None));
+        currentPlayer = PlayerType::Player;
+
         // CORE
         while (window.isOpen()) {
             // DISPLAY
             window.clear();
             window.draw(background);
-            //window.draw(title);
+            // GAME BOARD
+            if (game) {
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
+                        cell.setOutlineThickness(2);
+                        cell.setOutlineColor(sf::Color::Black);
+                        cell.setPosition(j * CELL_SIZE, i * CELL_SIZE);
+                        window.draw(cell);
+                        if (board[i][j] != PlayerType::None) {
+                            if (board[i][j] == PlayerType::Player) {
+                                sf::RectangleShape cross(sf::Vector2f(CELL_SIZE, 10));
+                                cross.setFillColor(sf::Color::Red);
+                                cross.rotate(45);
+                                cross.setPosition(j * CELL_SIZE + 25, i * CELL_SIZE + 25);
+                                window.draw(cross);
+                                cross.rotate(-90);
+                                cross.setPosition(j * CELL_SIZE + 25, i * CELL_SIZE + 150);
+                                window.draw(cross);
+                            }
+                            else {
+                                sf::CircleShape circle(CELL_SIZE / 2 - 20);
+                                circle.setFillColor(sf::Color::Blue);
+                                circle.setPosition(j * CELL_SIZE + 20, i * CELL_SIZE + 20);
+                                window.draw(circle);
+                            }
+                        }
+
+                    }
+                }
+            }
+            else {
+                // TITLE
+                if (win == 1) {
+                    sf::Text title(L"Вы выиграли!", font, 48);
+                    title.setFillColor(sf::Color::White);
+                    title.setPosition(150, CELL_SIZE);
+                    window.draw(title);
+                }else if (win == 2) {
+                    sf::Text title(L"Вы проиграли!", font, 48);
+                    title.setFillColor(sf::Color::White);
+                    title.setPosition(150, CELL_SIZE);
+                    window.draw(title);
+                }
+                else {
+                    sf::Text title(L"Ничья", font, 48);
+                    title.setFillColor(sf::Color::White);
+                    title.setPosition(170, CELL_SIZE);
+                    window.draw(title);
+                }
+
+            }
 
             // DISPLAY FINAL
             window.display();
 
+            // FIND WIN
+            if (game) {
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    if (board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
+                        if (board[i][0] == PlayerType::Player) {
+                            win = 1;
+                            game = false;
+                            break;
+
+                        }
+                        else if (board[i][0] == PlayerType::Bot) {
+                            win = 2;
+                            game = false;
+                            break;
+                        }
+                    }
+                    if (board[0][i] == board[1][i] && board[1][i] == board[2][i]) {
+                        if (board[0][i] == PlayerType::Player) {
+                            win = 1;
+                            game = false;
+                            break;
+                        }
+                        else if (board[0][i] == PlayerType::Bot) {
+                            win = 2;
+                            game = false;
+                            break;
+                        }
+                    }
+                }
+
+                // Проверка диагоналей
+
+
+                // HAV EMPTY
+                int e = 0;
+                for (int i = 0; i < BOARD_SIZE; i++) {
+                    for (int j = 0; j < BOARD_SIZE; j++) {
+                        if (board[i][j] == PlayerType::None) {
+                            e++;
+                        }
+                    }
+                }
+                if (e == 0) { game = false; }
+
+                //BOT
+                if (currentPlayer == PlayerType::Bot){
+                    for (int i = 0; i < BOARD_SIZE; i++) {
+                        for (int j = 0; j < BOARD_SIZE; j++) {
+                            if ((board[i][j] == PlayerType::None) && (currentPlayer == PlayerType::Bot)) {
+                                board[i][j] = PlayerType::Bot;
+                                currentPlayer = PlayerType::Player;
+                                break;
+                            }
+                        }
+                    }
+                    
+                }
+            }
 
             // EVENTS
             sf::Event event;
@@ -243,6 +168,22 @@ public:
                 switch (event.type) {
                 case sf::Event::Closed:
                     window.close();
+                    break;
+                case sf::Event::MouseButtonPressed:
+                    if (game) {
+                        if (event.mouseButton.button == sf::Mouse::Left) {
+                            sf::Vector2f mousePosition = window.mapPixelToCoords(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+                            if (currentPlayer == PlayerType::Player) {
+                                int row = event.mouseButton.y / CELL_SIZE;
+                                int col = event.mouseButton.x / CELL_SIZE;
+                                // ADD
+                                if (board[row][col] == PlayerType::None && currentPlayer == PlayerType::Player) {
+                                    board[row][col] = PlayerType::Player;
+                                    currentPlayer = PlayerType::Bot;
+                                }
+                            }
+                        }
+                    }
                     break;
                 default:
                     break;
